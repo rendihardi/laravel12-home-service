@@ -18,11 +18,13 @@ class CategoryForm
 
                 FileUpload::make('photo')
                     ->image()
-                    ->required(),
+                    ->required()
+                    ->disk('public'),
 
                 FileUpload::make('photo_white')
                     ->image()
-                    ->required(),
+                    ->required()
+                    ->disk('public'),
             ]);
     }
 }

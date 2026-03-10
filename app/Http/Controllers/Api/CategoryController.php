@@ -11,7 +11,7 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     {
-        $categories = Category::query();
+        $categories = Category::withCount(['homeServices']);
 
         if ($request->has('limit')) {
             $categories->limit($request->input('limit'));
@@ -22,7 +22,19 @@ class CategoryController extends Controller
 
     public function show(Category $category)
     {
-        $category->load(['homeServices']);
+        $category->load([
+            'homeServices.category',
+            'popularServices',
+        ]);
+
+        $category->loadCount(['homeServices']);
+
+        $category->popularServices->each(function ($service) {
+            $service->thumbnail = asset('storage/'.$service->thumbnail);
+        });
+        $category->homeServices->each(function ($service) {
+            $service->thumbnail = asset('storage/'.$service->thumbnail);
+        });
 
         return new CategoryApiResource($category);
     }

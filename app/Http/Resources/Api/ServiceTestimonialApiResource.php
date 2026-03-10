@@ -14,6 +14,9 @@ class ServiceTestimonialApiResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        $data = parent::toArray($request);
+        $data['photo'] = asset('storage/'.$this->photo);
+
+        return $data;
     }
 }

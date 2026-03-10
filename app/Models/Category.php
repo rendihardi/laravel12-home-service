@@ -27,4 +27,12 @@ class Category extends Model
     {
         return $this->hasMany(HomeService::class);
     }
+
+    public function popularServices()
+    {
+        return $this->hasMany(HomeService::class)
+            ->where('is_popular', true)
+            ->orderBy('created_at', 'desc')
+            ->with('category');
+    }
 }

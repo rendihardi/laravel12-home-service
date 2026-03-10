@@ -25,7 +25,8 @@ class HomeServiceForm
 
                         FileUpload::make('thumbnail')
                             ->required()
-                            ->image(),
+                            ->image()
+                            ->disk('public'),
 
                         TextInput::make('price')
                             ->required()
