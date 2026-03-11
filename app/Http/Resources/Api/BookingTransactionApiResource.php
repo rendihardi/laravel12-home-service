@@ -14,6 +14,14 @@ class BookingTransactionApiResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        $data = parent::toArray($request);
+
+        foreach ($data['transaction_details'] as &$detail) {
+            if (isset($detail['home_service']['thumbnail'])) {
+                $detail['home_service']['thumbnail'] = asset('storage/'.$detail['home_service']['thumbnail']);
+            }
+        }
+
+        return $data;
     }
 }

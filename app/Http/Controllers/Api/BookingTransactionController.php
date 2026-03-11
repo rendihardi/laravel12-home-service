@@ -65,13 +65,14 @@ class BookingTransactionController extends Controller
             // MIDTRANS PARAMS
             $params = [
                 'transaction_details' => [
-                    'order_id' => 'BOOK-'.$bookingTransaction->id.'-'.time(),
+                    'order_id' => $bookingTransaction->booking_trx_id,
                     'gross_amount' => $grandTotal,
                 ],
                 'customer_details' => [
-                    'first_name' => 'dandi',
+                    'first_name' => $bookingTransaction->name,
                     // 'first_name' => auth()->user()->name,
                 ],
+
             ];
 
             // GENERATE SNAP TOKEN
@@ -111,7 +112,6 @@ class BookingTransactionController extends Controller
         $booking = BookingTransaction::where('email', $request->input('email'))
             ->where('booking_trx_id', $request->input('booking_trx_id'))
             ->with([
-                'transactionDetails',
                 'transactionDetails.homeService',
             ])
             ->first();

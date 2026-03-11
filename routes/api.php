@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\BookingTransactionController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\HomeServiceController;
+use App\Http\Controllers\Api\MidtransController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,3 +19,5 @@ Route::apiResource('/categories', CategoryController::class);
 
 Route::post('/booking-transaction', [BookingTransactionController::class, 'store']);
 Route::post('/check-booking', [BookingTransactionController::class, 'booking_details']);
+
+Route::post('/midtrans-callback', [MidtransController::class, 'callback']);
