@@ -18,16 +18,33 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: 22
           script: |
-            git config --global --add safe.directory /www/wwwroot/api.mydigitalvillage.my.id
 
             cd /www/wwwroot/api.mydigitalvillage.my.id
 
+            git config --global --add safe.directory /www/wwwroot/api.mydigitalvillage.my.id
+
+            echo "Pull latest code"
             git pull origin master
 
+            echo "Fix permission"
             sudo chown -R reynd32:reynd32 .
             sudo chown -R www:www storage bootstrap/cache
-            sudo chmod -R 775 storage bootstrap/cache
 
+            sudo chmod -R 775 storage
+            sudo chmod -R 775 bootstrap/cache
+
+            sudo mkdir -p storage/logs
+            sudo touch storage/logs/laravel.log
+            sudo chmod 777 storage/logs/laravel.log
+
+            echo "Install composer"
             composer install --no-dev --optimize-autoloader
+
+            echo "Run migration"
             php artisan migrate --force
+
+            echo "Clear cache"
+            php artisan optimize:clear
+
+            echo "Optimize"
             php artisan optimize
