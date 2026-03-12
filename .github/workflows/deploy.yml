@@ -27,14 +27,6 @@ jobs:
             git fetch origin master
             git reset --hard origin/master
 
-            echo "Fix permission for web server"
-            sudo chown -R www:www storage bootstrap/cache vendor
-            sudo chmod -R 775 storage
-            sudo chmod -R 775 bootstrap/cache
-            sudo mkdir -p storage/logs
-            sudo touch storage/logs/laravel.log
-            sudo chmod 777 storage/logs/laravel.log
-
             echo "Install composer"
             composer install --no-dev --optimize-autoloader
 
@@ -46,3 +38,11 @@ jobs:
 
             echo "Optimize"
             php artisan optimize
+
+            echo "Fix permission for web server"
+            sudo chown -R www:www .
+            sudo chmod -R 775 storage
+            sudo chmod -R 775 bootstrap/cache
+            sudo mkdir -p storage/logs
+            sudo touch storage/logs/laravel.log
+            sudo chmod 777 storage/logs/laravel.log
