@@ -1,0 +1,24 @@
+name: Deploy Laravel
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 202.74.75.150
+          username: reynd32
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd /www/wwwroot/api.mydigitalvillage.my.id
+            git pull origin master
+            composer install --no-dev --optimize-autoloader
+            php artisan migrate --force
+            php artisan optimize:clear
+            php artisan optimize
